@@ -248,6 +248,11 @@ public class CombineArchive implements ICombineArchive {
 	}
 
 	@Override
+	public IManifestManager getManifest() {
+		return this.manifest;
+	}
+
+	@Override
 	public IMetadataManager getMetadata() {
 		return this.metadataManager;
 	}

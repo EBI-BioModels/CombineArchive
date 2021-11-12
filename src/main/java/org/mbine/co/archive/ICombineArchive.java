@@ -51,12 +51,18 @@ public interface ICombineArchive extends AutoCloseable {
 	}
 
 	/**
+	 * Get the manifest manager. This method provides the access to the manifest file associated with this combine archive and permits in-place operations.
+	 * @return the manifest manager, which cannot be null.
+	 */
+	IManifestManager getManifest();
+
+	/**
 	 * Get the meta-data manager. This provides access to the meta-data associated with this archive
 	 * and permits direct manipulation or querying of its associated RDF.
 	 * @return the metadata manager, which cannot be null.
 	 */
 	IMetadataManager getMetadata();
-	
+
 	/**
 	 * Tests if the given file location can be used to create a new artifact in the archive. This tests to see if the 
 	 * file location does not already exist.
