@@ -51,24 +51,24 @@ public class CreateNewArchiveTest {
      * compare an OMEX file that has LF (Unix-style) line endings with one that has CRLF separators
      * (Windows-style).
      */
-    private static final String EXAMPLE_ZIP = getOSDependentExampleFile();
+    private static final String EXAMPLE_OMEX = getOSDependentExampleFile();
     private static final String[] IGNORE_FILE_CONTENT = { "metadata.rdf" };
-    private static String EXAMPLE_PATH="example_files/example1_test/example_zip";
-    private Path zipPath;
+    private static String EXAMPLE_PATH="example_files/example1_test/example_omex";
+    private Path omexPath;
     private ICombineArchive arch;
 
     @Before
     public void setUp() throws Exception {
         if (System.getProperty("os.name").startsWith("Windows")) {
-            zipPath = Files.createTempFile("zipTest", ".zip");
+            omexPath = Files.createTempFile("omexTest", ".omex");
         } else {
             Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rw-r--r--");
             FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions.asFileAttribute(perms);
-            zipPath = Files.createTempFile("zipTest", ".zip", attr);
+            omexPath = Files.createTempFile("omexTest", ".omex", attr);
         }
         CombineArchiveFactory fact = new CombineArchiveFactory();
-        String zipPathStr = zipPath.toString();
-        Files.delete(zipPath);
+        String zipPathStr = omexPath.toString();
+        Files.delete(omexPath);
         arch = fact.openArchive(zipPathStr, true);
     }
 
@@ -79,7 +79,7 @@ public class CreateNewArchiveTest {
             this.arch.close();
         }
         this.arch = null;
-        Files.deleteIfExists(zipPath);
+        Files.deleteIfExists(omexPath);
     }
 
     @Test
@@ -98,13 +98,13 @@ public class CreateNewArchiveTest {
         writer2.close();
         arch.createArtifact(readMeTgt2, "text/plain", readMeSrc, false);
         arch.close();
-        assertEquals(zipPath.toFile(), new File(EXAMPLE_ZIP), IGNORE_FILE_CONTENT);
+        assertEquals(omexPath.toFile(), new File(EXAMPLE_OMEX), IGNORE_FILE_CONTENT);
     }
 
     private static String getOSDependentExampleFile() {
         final String prefix = "example_files/example1_test/example";
         final String WIN    = "_win";
-        final String suffix = ".zip";
+        final String suffix = ".omex";
         StringBuilder result = new StringBuilder(prefix);
         if (System.getProperty("os.name").startsWith("Windows")) {
             result.append(WIN);

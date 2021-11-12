@@ -38,8 +38,8 @@ import static org.junit.Assert.assertTrue;
 public class ReadArchiveTest {
 	private static final String EG1_PREFIX = "example_files/example1_test";
 	private static final String EG2_PREFIX = "example_files/example2_test";
-	private static final String EG2_ZIP = EG2_PREFIX + "/test_files";
-	private static final String TEST_ZIP = "example.zip";
+	private static final String EG2_OMEX = EG2_PREFIX + "/test_files";
+	private static final String TEST_OMEX = "example.omex";
 	private static final String[] EXPECTED_UPDATE_FILES = {
 		"readme.txt", "test_sheet.ps", "abc/foo/readme.txt", "anotherFile.txt", "manifest.xml", "metadata.rdf"
 	};
@@ -53,12 +53,12 @@ public class ReadArchiveTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		Path zipPath = FileSystems.getDefault().getPath(EG1_PREFIX, TEST_ZIP).toAbsolutePath();
+		Path omexPath = FileSystems.getDefault().getPath(EG1_PREFIX, TEST_OMEX).toAbsolutePath();
 //		Set<PosixFilePermission> perms = PosixFilePermissions.fromString("rw-r--r--");
 //		FileAttribute<Set<PosixFilePermission>> attr = PosixFilePermissions.asFileAttribute(perms);
 //		tmpFile = Files.createTempFile("tmp", ".zip", attr);
 		tmpFile = Files.createTempFile("tmp", ".zip");
-		Files.copy(zipPath, tmpFile, StandardCopyOption.REPLACE_EXISTING);
+		Files.copy(omexPath, tmpFile, StandardCopyOption.REPLACE_EXISTING);
 		CombineArchiveFactory fact = new CombineArchiveFactory();
 		arch = fact.openArchive(tmpFile.toString(), false);
 	}
@@ -136,7 +136,7 @@ public class ReadArchiveTest {
 	
 	@Test
 	public void testUpdateArchive() throws Exception{
-		Path readMePath = FileSystems.getDefault().getPath(EG2_ZIP, "anotherFile.txt");
+		Path readMePath = FileSystems.getDefault().getPath(EG2_OMEX, "anotherFile.txt");
 		ArtifactInfo entry = arch.createArtifact(readMePath.getFileName().toString(), "text/plain", false);
 		OutputStream writer = arch.writeArtifact(entry);
 		Files.copy(readMePath, writer);
