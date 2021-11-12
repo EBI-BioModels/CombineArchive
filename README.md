@@ -45,6 +45,10 @@ Eclipse and IntelliJ IDEA project files are available in the project's root fold
 Ensure you perform dependency resolution (by running `ant resolve`) so that your classpath
 is configured correctly.
 
+Existing Maven based deployments
+--------------------------------
+A maven-based deployment of this library is available at [EBI's Maven central repository](https://www.ebi.ac.uk/~maven/m2repo/org/mbine/co/libCombineArchive/)
+
 Contact
 --------
 All feedback and suggestions are welcome via either raising an issue on this repository or sending us a message to  
