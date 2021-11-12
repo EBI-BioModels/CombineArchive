@@ -1,6 +1,7 @@
 Combine Archive
 ===============
-This provide an experimental implementation of a Java API to the combine archive (<http://co.mbine.org/documents/archive>).
+This provides an experimental implementation of a Java API to the 
+[COMBINE Archive](http://co.mbine.org/documents/archive).
 
 The archive maintains the manifest of the archive and provides access to the metadata file to enable custom annotation
 of the archive. It provides basic annotation of the archive including the creation and modification dates of the contents.
@@ -13,6 +14,11 @@ and also how to update an existing archive. These are called:
 * CreateNewArchiveTest.java
 * UpdateArchiveTest.java
 * ExtractArchiveTest.java
+
+An example of its usage is downloading COMBINE Archive files from 
+[BioModels repository](https://www.ebi.ac.uk/biomodels).
+When users do not select a single file to download and want to download the whole files, they can click on the Download 
+button to obtain the COMBINE Archive file which is implemented this library. 
 
 Build Instructions
 ------------------
