@@ -59,6 +59,7 @@ public class CombineArchiveFactory implements ICombineArchiveFactory {
 			if(!Files.exists(maniPath)){
 				if(createFlag){
 					Files.createFile(maniPath);
+					initManifest(man);
 					man.save();
 				}
 			}
@@ -83,6 +84,26 @@ public class CombineArchiveFactory implements ICombineArchiveFactory {
 		}
 	}
 
+	private void initManifest(IManifestManager mfm) {
+		String format = "https://identifiers.org/combine.specifications/omex-manifest";
+		Map<String, String> data = new HashMap<>();
+		data.put("format", format);
+		data.put("master", "false");
+		mfm.addEntry("./manifest.xml", data);
+
+		format = "https://identifiers.org/combine.specifications/omex-metadata";
+		data = new HashMap<>();
+		data.put("format", format);
+		data.put("master", "false");
+		mfm.addEntry("./metadata.rdf", data);
+
+		format = "https://identifiers.org/combine.specifications/omex";
+		data = new HashMap<>();
+		data.put("format", format);
+		data.put("master", "false");
+		mfm.addEntry(".", data);
+	}
+
 	private void createMetadata(Path metadataPath) throws IOException{
 		Model mdl = ModelFactory.createDefaultModel();
 		mdl.setNsPrefix("dcterms", DCTerms.NS);
@@ -93,7 +114,7 @@ public class CombineArchiveFactory implements ICombineArchiveFactory {
 		docRoot.addProperty(DCTerms.created, format.format(creationDate));
 		docRoot.addProperty(DCTerms.creator, "libCombineArchive");
 		
-		try(OutputStream of = Files.newOutputStream(metadataPath)){
+		try (OutputStream of = Files.newOutputStream(metadataPath)) {
 			mdl.write(of);
 		}
 	}
