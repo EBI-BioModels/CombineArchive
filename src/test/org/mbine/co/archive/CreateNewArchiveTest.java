@@ -15,7 +15,9 @@
 
 package org.mbine.co.archive;
 
-import static org.apache.poi.openxml4j.opc.ZipFileAssert.assertEquals;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.OutputStream;
@@ -27,12 +29,7 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Set;
 
-import org.mbine.co.archive.ArtifactInfo;
-import org.mbine.co.archive.CombineArchiveFactory;
-import org.mbine.co.archive.ICombineArchive;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.apache.poi.openxml4j.opc.ZipFileAssert.assertEquals;
 
 /**
  * 
@@ -85,17 +82,23 @@ public class CreateNewArchiveTest {
     @Test
     public void testCreateArtifact() throws Exception {
         Path readMeSrc = FileSystems.getDefault().getPath(EXAMPLE_PATH, "readme.txt");
+
+        // create the artifact 1 from the readme.txt
         String readMeTgt1 = readMeSrc.getFileName().toString();
-        String readMeTgt2 = "abc/foo/" + readMeSrc.getFileName();
         ArtifactInfo entry1 = arch.createArtifact(readMeTgt1, "text/plain", true);
         OutputStream writer1 = arch.writeArtifact(entry1);
         Files.copy(readMeSrc, writer1);
         writer1.close();
+
+        // create the artifact 2 from the test_sheet.ps
         Path psFile = FileSystems.getDefault().getPath(EXAMPLE_PATH, PSFILE_NAME);
         ArtifactInfo entry2 = arch.createArtifact(PSFILE_NAME, "application/postscript", false);
         OutputStream writer2 = arch.writeArtifact(entry2);
         Files.copy(psFile, writer2);
         writer2.close();
+
+        // create the artifact 3 from the readme.txt but put it in a subdirectory
+        String readMeTgt2 = "abc/foo/" + readMeSrc.getFileName();
         arch.createArtifact(readMeTgt2, "text/plain", readMeSrc, false);
 
         // sort the entries in the manifest

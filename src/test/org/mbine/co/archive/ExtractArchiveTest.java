@@ -120,15 +120,16 @@ public class ExtractArchiveTest {
    }
 
    private Object[] paramsToTestExtractMasterFile() {
+      final String SBML_L3V1 = "https://identifiers.org/combine.specifications/sbml.level-3.version-1";
       return new Object[] {
          /* the OMEX file below does not declare a master attribute */
          new Object[] {BIOMD0000001000_OMEX, false, "", false, "omex_files/BIOMD0000001000/MODEL1712050009.xml"},
-         new Object[] {MODEL2012220003_OMEX, true, "https://identifiers.org/combine.specifications/sbml.level-3" +
-                 ".version-1", true, "omex_files/MODEL2012220003/iDPM21RW.xml"},
-         new Object[] {iAB_AMO1410_SARS_CoV2_OMEX, true, "https://identifiers.org/combine.specifications/sbml.level-3" +
-                 ".version-1", true, "omex_files/iAB_AMO1410_SARS-CoV-2/iAB_AMO1410_SARS-CoV-2.xml"},
+         new Object[] {MODEL2012220003_OMEX, true, SBML_L3V1, true, "omex_files/MODEL2012220003/iDPM21RW.xml"},
+         new Object[] {iAB_AMO1410_SARS_CoV2_OMEX, true, SBML_L3V1, true, "omex_files/iAB_AMO1410_SARS-CoV-2" +
+                 "/iAB_AMO1410_SARS-CoV-2.xml"},
       };
    }
+
    private Object[] paramsToTestFindMasterFile() {
       return new Object[] {
          new Object[] {BIOMD0000001000_OMEX, false},
@@ -136,7 +137,8 @@ public class ExtractArchiveTest {
          new Object[] {iAB_AMO1410_SARS_CoV2_OMEX, true},
       };
    }
-   private static String convertInputStreamToString(InputStream is) throws IOException {
+
+   private static String convertInputStreamToString(InputStream is) {
       if (is == null) {
          return "";
       }
