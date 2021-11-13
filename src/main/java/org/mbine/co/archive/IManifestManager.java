@@ -42,4 +42,16 @@ public interface IManifestManager {
 
 	int numEntries();
 
+   /**
+    * Sorts the entries in the manifest in lexicographical order by the locations. The sorting strategy is:
+    * <ul>
+    * <li>The dot (.) being the root is placed firstly.
+    * <li>The ./manifest.xml is the second order.
+    * <li>The ./metadata.rdf is the third place.
+    * <li>The lasting entries are sorted in alphabetical order.
+    * </ul>
+    * This method will let clients call after adding entries into a specific manifest manager instance and before
+    * calling the {@link org.mbine.co.archive.ManifestManager#save()} method to write the content out the file.
+    */
+   void sortByLocation();
 }

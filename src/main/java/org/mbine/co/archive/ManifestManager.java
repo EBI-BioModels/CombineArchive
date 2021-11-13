@@ -32,18 +32,21 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
- * 
- * @author Stuart Moodie
+ * A specific implementation of the ManifestManager interface.
  *
+ * @author Stuart Moodie
+ * @author <a href="mailto:nvntung@gmail.com">Tung Nguyen</a>
  */
 public class ManifestManager implements IManifestManager {
 	private static final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<omexManifest xmlns=\"http://identifiers.org/combine.specifications/omex-manifest\">";
 	private static final String XML_FOOTER = "</omexManifest>\n";
 	private final Path maniPath; 
-	private final Map<String, Map<String, String>> manifestMap;
+	private Map<String, Map<String, String>> manifestMap;
 
 	public ManifestManager(Path manifestFile) {
 		this.maniPath = manifestFile;
@@ -162,5 +165,16 @@ public class ManifestManager implements IManifestManager {
 	public int numEntries() {
 		return this.manifestMap.size();
 	}
-	
+
+   public void sortByLocation() {
+		Map<String, Map<String, String>> sortedMap = this.manifestMap.entrySet().stream()
+			.sorted(Map.Entry.comparingByKey())
+			.collect(Collectors.toMap(
+					Map.Entry::getKey,
+					Map.Entry::getValue,
+					(a, b) -> { throw new AssertionError(); },
+					LinkedHashMap::new
+			));
+		this.manifestMap = sortedMap;
+	}
 }

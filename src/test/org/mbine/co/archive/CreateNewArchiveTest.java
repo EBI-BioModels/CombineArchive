@@ -97,6 +97,12 @@ public class CreateNewArchiveTest {
         Files.copy(psFile, writer2);
         writer2.close();
         arch.createArtifact(readMeTgt2, "text/plain", readMeSrc, false);
+
+        // sort the entries in the manifest
+        IManifestManager mfm = arch.getManifest();
+        mfm.sortByLocation();
+        mfm.save();
+
         arch.close();
         assertEquals(omexPath.toFile(), new File(EXAMPLE_OMEX), IGNORE_FILE_CONTENT);
     }
