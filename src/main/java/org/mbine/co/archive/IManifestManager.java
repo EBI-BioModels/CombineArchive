@@ -20,27 +20,32 @@ import java.util.Map;
 
 /**
  * @author Stuart Moodie
- *
  */
 public interface IManifestManager {
 
-	void load();
+   void load();
 
-	void addEntry(String path, Map<String, String> data);
+   void addEntry(String path, Map<String, String> data);
 
-	void removeEntry(String path);
+   void removeEntry(String path);
 
-	boolean hasEntry(String path);
+   boolean hasEntry(String path);
 
-	String getFileType(String path);
+   String getFileType(String path);
 
-	boolean isMasterFile(String path);
+   /**
+    * Checks an entry marked as master or not. The entry is given via the path parameter.
+    *
+    * @param path A String indicating the path/location of the entry in the manifest file.
+    * @return true or false depending on the input
+    */
+   boolean isMasterFile(String path);
 
-	Iterator<String> filePathIterator();
+   Iterator<String> filePathIterator();
 
-	void save();
+   void save();
 
-	int numEntries();
+   int numEntries();
 
    /**
     * Sorts the entries in the manifest in lexicographical order by the locations. The sorting strategy is:

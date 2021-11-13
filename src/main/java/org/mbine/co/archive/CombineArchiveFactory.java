@@ -33,96 +33,92 @@ import java.util.Map;
 
 
 /**
- * 
  * @author Stuart Moodie
- *
  */
 
 public class CombineArchiveFactory implements ICombineArchiveFactory {
-	private static final String JAR_URI_PREFIX = "jar:";
-	private static final String MANIFEST_FILE_NAME = "manifest.xml";
-	private static final String METADATA_FILE_NAME = "metadata.rdf";
+   private static final String JAR_URI_PREFIX = "jar:";
+   private static final String MANIFEST_FILE_NAME = "manifest.xml";
+   private static final String METADATA_FILE_NAME = "metadata.rdf";
 //	private static final String VCARD_NS = "http://www.w3.org/2006/vcard/ns#";
-	
-	
-	@Override
-	public ICombineArchive openArchive(String path, boolean createFlag) {
-		try{
-			Map<String, String> env = new HashMap<>();
-			env.put("create", Boolean.toString(createFlag));
-			Path zipLocn = Paths.get(path).toAbsolutePath();
-			URI zipUri = URI.create(JAR_URI_PREFIX + zipLocn.toUri().toString());
-			ICombineArchive retVal = null;
-			FileSystem zipFs = FileSystems.newFileSystem(zipUri, env);
-			Path maniPath = zipFs.getPath(MANIFEST_FILE_NAME);
-			IManifestManager man = new ManifestManager(maniPath);
-			if(!Files.exists(maniPath)){
-				if(createFlag){
-					Files.createFile(maniPath);
-					initManifest(man);
-					man.save();
-				}
-			}
-			else{
-				man.load();
-			}
-			Path metadataPath = zipFs.getPath(METADATA_FILE_NAME);
-			IMetadataManager meta = new MetadataManager(metadataPath);
-			if(!Files.exists(metadataPath)){
-				if(createFlag){
-					createMetadata(metadataPath);
-				}
-			}
-			else{
-				meta.load();
-			}
-			retVal = new CombineArchive(zipFs, man, meta);
 
-			return retVal;
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
 
-	private void initManifest(IManifestManager mfm) {
-		String format = "https://identifiers.org/combine.specifications/omex-manifest";
-		Map<String, String> data = new HashMap<>();
-		data.put("format", format);
-		data.put("master", "false");
-		mfm.addEntry("./manifest.xml", data);
+   @Override
+   public ICombineArchive openArchive(String path, boolean createFlag) {
+      try {
+         Map<String, String> env = new HashMap<>();
+         env.put("create", Boolean.toString(createFlag));
+         Path zipLocn = Paths.get(path).toAbsolutePath();
+         URI zipUri = URI.create(JAR_URI_PREFIX + zipLocn.toUri().toString());
+         ICombineArchive retVal = null;
+         FileSystem zipFs = FileSystems.newFileSystem(zipUri, env);
+         Path maniPath = zipFs.getPath(MANIFEST_FILE_NAME);
+         IManifestManager man = new ManifestManager(maniPath);
+         if (!Files.exists(maniPath)) {
+            if (createFlag) {
+               Files.createFile(maniPath);
+               initManifest(man);
+               man.save();
+            }
+         } else {
+            man.load();
+         }
+         Path metadataPath = zipFs.getPath(METADATA_FILE_NAME);
+         IMetadataManager meta = new MetadataManager(metadataPath);
+         if (!Files.exists(metadataPath)) {
+            if (createFlag) {
+               createMetadata(metadataPath);
+            }
+         } else {
+            meta.load();
+         }
+         retVal = new CombineArchive(zipFs, man, meta);
 
-		format = "https://identifiers.org/combine.specifications/omex-metadata";
-		data = new HashMap<>();
-		data.put("format", format);
-		data.put("master", "false");
-		mfm.addEntry("./metadata.rdf", data);
+         return retVal;
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
+   }
 
-		format = "https://identifiers.org/combine.specifications/omex";
-		data = new HashMap<>();
-		data.put("format", format);
-		data.put("master", "false");
-		mfm.addEntry(".", data);
-	}
+   private void initManifest(IManifestManager mfm) {
+      String format = "https://identifiers.org/combine.specifications/omex-manifest";
+      Map<String, String> data = new HashMap<>();
+      data.put("format", format);
+      data.put("master", "false");
+      mfm.addEntry("./manifest.xml", data);
 
-	private void createMetadata(Path metadataPath) throws IOException{
-		Model mdl = ModelFactory.createDefaultModel();
-		mdl.setNsPrefix("dcterms", DCTerms.NS);
-		
-		Resource docRoot = mdl.createResource("file:///");
-		Date creationDate = new Date();
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SXXX");
-		docRoot.addProperty(DCTerms.created, format.format(creationDate));
-		docRoot.addProperty(DCTerms.creator, "libCombineArchive");
-		
-		try (OutputStream of = Files.newOutputStream(metadataPath)) {
-			mdl.write(of);
-		}
-	}
+      format = "https://identifiers.org/combine.specifications/omex-metadata";
+      data = new HashMap<>();
+      data.put("format", format);
+      data.put("master", "false");
+      mfm.addEntry("./metadata.rdf", data);
 
-	@Override
-	public boolean canOpenArchive(String path, boolean createFlag) {
-		Path zipLocn = Paths.get(path);
-		return Files.isRegularFile(zipLocn) && Files.isReadable(zipLocn) && Files.isWritable(zipLocn);
-	}
+      format = "https://identifiers.org/combine.specifications/omex";
+      data = new HashMap<>();
+      data.put("format", format);
+      data.put("master", "false");
+      mfm.addEntry(".", data);
+   }
+
+   private void createMetadata(Path metadataPath) throws IOException {
+      Model mdl = ModelFactory.createDefaultModel();
+      mdl.setNsPrefix("dcterms", DCTerms.NS);
+
+      Resource docRoot = mdl.createResource("file:///");
+      Date creationDate = new Date();
+      DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SXXX");
+      docRoot.addProperty(DCTerms.created, format.format(creationDate));
+      docRoot.addProperty(DCTerms.creator, "libCombineArchive");
+
+      try (OutputStream of = Files.newOutputStream(metadataPath)) {
+         mdl.write(of);
+      }
+   }
+
+   @Override
+   public boolean canOpenArchive(String path, boolean createFlag) {
+      Path zipLocn = Paths.get(path);
+      return Files.isRegularFile(zipLocn) && Files.isReadable(zipLocn) && Files.isWritable(zipLocn);
+   }
 
 }

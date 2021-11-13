@@ -19,16 +19,15 @@ import com.hp.hpl.jena.rdf.model.Model;
 
 /**
  * @author Stuart Moodie
- *
  */
 public interface IMetadataManager {
 
-	void load();
+   void load();
 
-	void updateModifiedTimestamp();
+   void updateModifiedTimestamp();
 
-	Model getRDFModel();
+   Model getRDFModel();
 
-	void save();
+   void save();
 
 }

@@ -18,34 +18,36 @@ package org.mbine.co.archive;
 
 /**
  * @author Stuart Moodie
- *
  */
 public class CombineArchiveException extends RuntimeException {
-	private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-	/**
-	 * Exception with simple message.
-	 * @param message A string representing the exception message
-	 */
-	public CombineArchiveException(String message) {
-		super(message);
-	}
+   /**
+    * Exception with simple message.
+    *
+    * @param message A string representing the exception message
+    */
+   public CombineArchiveException(String message) {
+      super(message);
+   }
 
-	/**
-	 * Exception the rethrows another (possible typed) exception.
-	 * @param cause A cause
-	 */
-	public CombineArchiveException(Throwable cause) {
-		super(cause);
-	}
+   /**
+    * Exception the rethrows another (possible typed) exception.
+    *
+    * @param cause A cause
+    */
+   public CombineArchiveException(Throwable cause) {
+      super(cause);
+   }
 
-	/**
-	 * Exception that provides a message to a rethrown exception.
-	 * @param message	A string denoting the exception message
-	 * @param cause	A cause
-	 */
-	public CombineArchiveException(String message, Throwable cause) {
-		super(message, cause);
-	}
+   /**
+    * Exception that provides a message to a rethrown exception.
+    *
+    * @param message A string denoting the exception message
+    * @param cause   A cause
+    */
+   public CombineArchiveException(String message, Throwable cause) {
+      super(message, cause);
+   }
 
 }
