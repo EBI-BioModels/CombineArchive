@@ -38,13 +38,27 @@ public class MetadataManager implements IMetadataManager {
 	 * 
 	 */
 	private static final String W3C_DTF_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SXXX";
-	private final Path metaPath; 
+
+	private final Path metaPath;
 	private Model model;
 	private final DateFormat format;
 
 	public MetadataManager(Path metaFile) {
 		this.metaPath = metaFile;
 		format = new SimpleDateFormat(W3C_DTF_FORMAT);
+	}
+
+
+	public Path getMetaPath() {
+		return metaPath;
+	}
+
+	public Model getModel() {
+		return model;
+	}
+
+	public void setModel(Model model) {
+		this.model = model;
 	}
 
 	/* (non-Javadoc)
