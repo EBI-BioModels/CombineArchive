@@ -6,7 +6,7 @@
 
     <groupId>org.mbine.co</groupId>
     <artifactId>libCombineArchive</artifactId>
-    <version>0.2.3</version>
+    <version>0.3-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -129,7 +129,7 @@
     <distributionManagement>
         <repository>
             <id>ebi-release</id>
-            <name>EBI Maven Release repository</name>
+            <name>EBI Maven Release re`````pository</name>
             <url>scp://login.ebi.ac.uk/homes/maven/public_html/m2repo</url>
         </repository>
         <snapshotRepository>
