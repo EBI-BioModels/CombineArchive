@@ -91,7 +91,11 @@ public class CombineArchive implements ICombineArchive {
          Map data = new HashMap<String, String>();
          data.put("format", fileType);
          data.put("master", Boolean.toString(master));
-         this.manifest.addEntry(newResPath.toString(), data);
+         String entryPath = newResPath.toString();
+         if (!entryPath.startsWith("./")) {
+            entryPath = "./" + entryPath;
+         }
+         this.manifest.addEntry(entryPath, data);
          ArtifactInfo retVal = new ArtifactInfo(fileLocation, fileType, master);
          this.manifest.save();
          this.contentChanged = true;
