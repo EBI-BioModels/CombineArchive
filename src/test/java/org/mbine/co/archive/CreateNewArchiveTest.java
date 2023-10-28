@@ -29,7 +29,7 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Set;
 
-import static org.apache.poi.openxml4j.opc.ZipFileAssert.assertEquals;
+import static org.mbine.co.archive.ZipFileAssert.assertEquals;
 
 /**
  * 
