@@ -25,6 +25,7 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.ResourceFactory;
 import com.hp.hpl.jena.vocabulary.DCTerms;
+import org.junit.Test;
 
 /**
  * 
@@ -38,11 +39,9 @@ public class JenaTest {
 	private static final String fullName = givenName + " " + familyName;
 	private static final String XPathURI = "file:///mainmdl.xml?/PharmML";
 	private static final String VCARD_NS = "http://www.w3.org/2006/vcard/ns#";
-	
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
+
+	@Test
+	public void testJena() {
 		Model mdl = ModelFactory.createDefaultModel();
 		mdl.setNsPrefix("dcterms", DCTerms.NS);
 		mdl.setNsPrefix("vcard", VCARD_NS);
