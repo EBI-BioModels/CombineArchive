@@ -30,7 +30,7 @@
  * under the License.
  */
 
-package org.apache.poi.openxml4j.opc;
+package org.mbine.co.archive;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -49,7 +49,7 @@ import static org.junit.Assert.*;
 import junit.framework.AssertionFailedError;
 
 /**
- * Compare the contents of 2 zip files.
+ * Compare the contents of 2 ZIP files.
  * 
  * @author CDubettier
  * @author Stuart Moodie. Modified to allow the comparison of some files to be skipped.
@@ -82,12 +82,12 @@ public class ZipFileAssert {
 					// no need to check for contain1. The key come from it
 
 					if ((fileName.endsWith(".xml")) || fileName.endsWith(".rels")) {
-						// we have a xml file
+						// we have a XML file
 						// TODO
-						// YK: the original OpenXML4J version attempted to compare xml using xmlunit (http://xmlunit.sourceforge.net),
+						// YK: the original OpenXML4J version attempted to compare XML using xmlunit (http://xmlunit.sourceforge.net),
 						// but POI does not depend on this library
 					} else {
-						// not xml, may be an image or other binary format
+						// not XML, may be an image or other binary format
 						if (contain2.size() != contain1.size()) {
 							// not the same size
 							fail(fileName
@@ -115,23 +115,22 @@ public class ZipFileAssert {
 		return true;
 	}
 
-	protected static TreeMap<String, ByteArrayOutputStream> decompress(
-			File filename) throws IOException {
-		// store the zip content in memory
+	protected static TreeMap<String, ByteArrayOutputStream> uncompress(final File filename) throws IOException {
+		// store the ZIP content in memory
 		// let s assume it is not Go ;-)
 		TreeMap<String, ByteArrayOutputStream> zipContent = new TreeMap<String, ByteArrayOutputStream>();
 
 		byte data[] = new byte[BUFFER_SIZE];
-		/* Open file to decompress */
+		/* Open file to uncompress */
 		FileInputStream file_decompress = new FileInputStream(filename);
 
-		/* Create a buffer for the decompressed files */
+		/* Create a buffer for the uncompressed files */
 		BufferedInputStream buffi = new BufferedInputStream(file_decompress);
 
 		/* Open the file with the buffer */
 		ZipInputStream zis = new ZipInputStream(buffi);
 
-		/* Processing entries of the zip file */
+		/* Processing entries of the ZIP file */
 		ZipEntry entree;
 		int count;
 		while ((entree = zis.getNextEntry()) != null) {
@@ -173,8 +172,8 @@ public class ZipFileAssert {
 		assertTrue("Actual file not readable", actual.canRead());
 
 		try {
-			TreeMap<String, ByteArrayOutputStream> file1 = decompress(expected);
-			TreeMap<String, ByteArrayOutputStream> file2 = decompress(actual);
+			TreeMap<String, ByteArrayOutputStream> file1 = uncompress(expected);
+			TreeMap<String, ByteArrayOutputStream> file2 = uncompress(actual);
 			equals(file1, file2, ignoredFiles);
 		} catch (IOException e) {
 			throw new AssertionFailedError(e.toString());
