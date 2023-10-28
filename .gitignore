@@ -4,14 +4,20 @@ ant-build
 libs/test
 libs/compile
 jars
+build/
 *.iws
 .*
 !.gitignore
-!.project
-!.classpath
 *~
 out
 
+# IntelliJIDEA
 *.iml
 *.ipr
 target/
+
+# Eclipse Core
+.project
+
+# JDT-specific (Eclipse Java Development Tools)
+.classpath
