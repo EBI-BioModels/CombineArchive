@@ -147,10 +147,9 @@ public class CombineArchive implements ICombineArchive {
 
       try {
          Path entryPath = getPath(artefactInfo.getPath()).toAbsolutePath();
-         OutputStream strm = null;
-         strm = Files.newOutputStream(entryPath, StandardOpenOption.WRITE);
+         OutputStream stream = Files.newOutputStream(entryPath, StandardOpenOption.WRITE);
          this.contentChanged = true;
-         return strm;
+         return stream;
       } catch (IOException e) {
          throw new RuntimeException(e);
       }
@@ -173,7 +172,7 @@ public class CombineArchive implements ICombineArchive {
 
    @Override
    public boolean canCreateArtifact(String fileLocation) {
-      boolean retVal = true;
+      boolean retVal;
       try {
          if (fileLocation != null) {
             Path testPath = getPath(fileLocation);

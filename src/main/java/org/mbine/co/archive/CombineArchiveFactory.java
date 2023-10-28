@@ -48,9 +48,9 @@ public class CombineArchiveFactory implements ICombineArchiveFactory {
       try {
          Map<String, String> env = new HashMap<>();
          env.put("create", Boolean.toString(createFlag));
-         Path zipLocn = Paths.get(path).toAbsolutePath();
-         URI zipUri = URI.create(JAR_URI_PREFIX + zipLocn.toUri().toString());
-         ICombineArchive retVal = null;
+         Path absolutePath = Paths.get(path).toAbsolutePath();
+         URI zipUri = URI.create(JAR_URI_PREFIX + absolutePath.toUri());
+         ICombineArchive retVal;
          FileSystem zipFs = FileSystems.newFileSystem(zipUri, env);
          Path maniPath = zipFs.getPath(MANIFEST_FILE_NAME);
          IManifestManager man = new ManifestManager(maniPath);
