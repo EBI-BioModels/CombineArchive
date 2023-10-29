@@ -37,7 +37,7 @@ The project is built by using Apache Ant and uses Apache Ivy for dependency reso
 For a list of all available targets please use `ant -p`.
  
     # Maven
-    # mvn clean compile test verify package install
+    mvn clean compile test verify package install
 
 <h3> IDE Support </h3>
 
@@ -47,17 +47,18 @@ is configured correctly.
 
 Existing Maven based deployments
 --------------------------------
-A maven-based deployment of this library is available at [EBI's Maven central repository](https://www.ebi.ac.uk/~maven/m2repo/org/mbine/co/libCombineArchive/)
+A maven-based deployments of this library are available at [EBI's
+Sonatype Nexus Repository Manager](https://www.ebi.ac.uk/Tools/maven/repos/#browse/welcome) in either [releases](https://www.ebi.ac.uk/Tools/maven/repos/#browse/browse:pst-release:org%2Fmbine%2Fco%2FlibCombineArchive) or [snapshots](https://www.ebi.ac.uk/Tools/maven/repos/#browse/browse:pst-snapshots:org%2Fmbine%2Fco%2FlibCombineArchive).
 
 Contact
 --------
 All feedback and suggestions are welcome via either raising an issue on this repository or sending us a message to  
-[biomodels-developers@sf.net](biomodels-developers@sf.net).
+[biomodels-developers@ebi.ac.uk](biomodels-developers@ebi.ac.uk).
 
 Developed by Stuart Moodie. Maintained by [Mihai Glonț](https://github.com/mglont) and [Tung Nguyen](https://github.com/ntung). Please raise 
 issues or feature
-requests [on GitHub](https://github.com/mglont/CombineArchive/issues).
+requests [on EBI-BioModels' GitHub](https://github.com/EBI-BioModels/CombineArchive/issues).
 
 License
 -------
-Copyright EMBL-EBI 2017 - 2021. This code is licensed under Apache V2.0. See LICENSE for more details.
+Copyright EMBL-EBI 2017 - 2023. This code is licensed under Apache V2.0. See LICENSE for more details.
