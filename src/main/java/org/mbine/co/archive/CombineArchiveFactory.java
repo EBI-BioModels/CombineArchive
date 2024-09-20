@@ -37,9 +37,9 @@ import java.util.Map;
  */
 
 public class CombineArchiveFactory implements ICombineArchiveFactory {
-   private static final String JAR_URI_PREFIX = "jar:";
-   private static final String MANIFEST_FILE_NAME = "manifest.xml";
-   private static final String METADATA_FILE_NAME = "metadata.rdf";
+    private static final String JAR_URI_PREFIX = "jar:";
+    private static final String MANIFEST_FILE_NAME = "manifest.xml";
+    private static final String METADATA_FILE_NAME = "metadata.rdf";
 //	private static final String VCARD_NS = "http://www.w3.org/2006/vcard/ns#";
 
 
@@ -80,50 +80,55 @@ public class CombineArchiveFactory implements ICombineArchiveFactory {
         }
     }
 
-   private void initManifest(IManifestManager mfm) {
-      String format = "https://identifiers.org/combine.specifications/omex-manifest";
-      Map<String, String> data = new HashMap<>();
-      data.put("format", format);
-      data.put("master", "false");
-      mfm.addEntry("./manifest.xml", data);
+    private void initManifest(IManifestManager mfm) {
+        String format = "https://identifiers.org/combine.specifications/omex-manifest";
+        Map<String, String> data = new HashMap<>();
+        data.put("format", format);
+        data.put("master", "false");
+        mfm.addEntry("./manifest.xml", data);
 
-      format = "https://identifiers.org/combine.specifications/omex-metadata";
-      data = new HashMap<>();
-      data.put("format", format);
-      data.put("master", "false");
-      mfm.addEntry("./metadata.rdf", data);
+        format = "https://identifiers.org/combine.specifications/omex-metadata";
+        data = new HashMap<>();
+        data.put("format", format);
+        data.put("master", "false");
+        mfm.addEntry("./metadata.rdf", data);
 
-      format = "https://identifiers.org/combine.specifications/omex";
-      data = new HashMap<>();
-      data.put("format", format);
-      data.put("master", "false");
-      mfm.addEntry(".", data);
-   }
+        format = "https://identifiers.org/combine.specifications/omex";
+        data = new HashMap<>();
+        data.put("format", format);
+        data.put("master", "false");
+        mfm.addEntry(".", data);
+    }
 
-   private void createMetadata(Path metadataPath) throws IOException {
-      Model mdl = ModelFactory.createDefaultModel();
-      mdl.setNsPrefix("dcterms", DCTerms.NS);
-
-      Resource docRoot = mdl.createResource("file:///");
-      Date creationDate = new Date();
-      DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SXXX");
-      docRoot.addProperty(DCTerms.created, format.format(creationDate));
-      docRoot.addProperty(DCTerms.creator, "libCombineArchive");
-
-      try (OutputStream of = Files.newOutputStream(metadataPath)) {
-         mdl.write(of);
-      }
-   }
-
-   @Override
-   public boolean canOpenArchive(String path, boolean createFlag) {
-      Path zipLocn = Paths.get(path);
-      return Files.isRegularFile(zipLocn) && Files.isReadable(zipLocn) && Files.isWritable(zipLocn);
-   }
     private void createMetadata(Path metadataPath, final String rootResourceURI) throws IOException {
         Model mdl = createRdfModelForBioModels();
 
         Resource docRoot = mdl.createResource(rootResourceURI);
+        Date creationDate = new Date();
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SXXX");
+        docRoot.addProperty(DCTerms.created, format.format(creationDate));
+        docRoot.addProperty(DCTerms.creator, "libCombineArchive");
+
+        try (OutputStream of = Files.newOutputStream(metadataPath)) {
+            mdl.write(of);
+        }
+    }
+
+    private static Model createRdfModelForBioModels() {
+        Model mdl = ModelFactory.createDefaultModel();
+        mdl.setNsPrefix("vCard", "http://www.w3.org/2001/vcard-rdf/3.0#");
+        mdl.setNsPrefix("bqbiol", "http://biomodels.net/biology-qualifiers/");
+        mdl.setNsPrefix("bqmodel", "http://biomodels.net/model-qualifiers/");
+        mdl.setNsPrefix("dcterms", DCTerms.NS);
+        return mdl;
+    }
+
+    @Override
+    public boolean canOpenArchive(String path, boolean createFlag) {
+        Path zipPath = Paths.get(path);
+        return Files.isRegularFile(zipPath) && Files.isReadable(zipPath) && Files.isWritable(zipPath);
+    }
+
     @Override
     public ICombineArchive openArchive(String path, boolean createFlag) {
         return openArchive(path, "file:///", createFlag);
