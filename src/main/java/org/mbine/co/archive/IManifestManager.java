@@ -23,40 +23,40 @@ import java.util.Map;
  */
 public interface IManifestManager {
 
-   void load();
+    void load();
 
-   void addEntry(String path, Map<String, String> data);
+    void addEntry(String path, Map<String, String> data);
 
-   void removeEntry(String path);
+    void removeEntry(String path);
 
-   boolean hasEntry(String path);
+    boolean hasEntry(String path);
 
-   String getFileType(String path);
+    String getFileType(String path);
 
-   /**
-    * Checks an entry marked as master or not. The entry is given via the path parameter.
-    *
-    * @param path A String indicating the path/location of the entry in the manifest file.
-    * @return true or false depending on the input
-    */
-   boolean isMasterFile(String path);
+    /**
+     * Checks an entry marked as master or not. The entry is given via the path parameter.
+     *
+     * @param path A String indicating the path/location of the entry in the manifest file.
+     * @return true or false depending on the input
+     */
+    boolean isMasterFile(String path);
 
-   Iterator<String> filePathIterator();
+    Iterator<String> filePathIterator();
 
-   void save();
+    void save();
 
-   int numEntries();
+    int numEntries();
 
-   /**
-    * Sorts the entries in the manifest in lexicographical order by the locations. The sorting strategy is:
-    * <ul>
-    * <li>The dot (.) being the root is placed firstly.
-    * <li>The ./manifest.xml is the second order.
-    * <li>The ./metadata.rdf is the third place.
-    * <li>The lasting entries are sorted in alphabetical order.
-    * </ul>
-    * This method will let clients call after adding entries into a specific manifest manager instance and before
-    * calling the {@link org.mbine.co.archive.ManifestManager#save()} method to write the content out the file.
-    */
-   void sortByLocation();
+    /**
+     * Sorts the entries in the manifest in lexicographical order by the locations. The sorting strategy is:
+     * <ul>
+     * <li>The dot (.) being the root is placed firstly.
+     * <li>The ./manifest.xml is the second order.
+     * <li>The ./metadata.rdf is the third place.
+     * <li>The lasting entries are sorted in alphabetical order.
+     * </ul>
+     * This method will let clients call after adding entries into a specific manifest manager instance and before
+     * calling the {@link org.mbine.co.archive.ManifestManager#save()} method to write the content out the file.
+     */
+    void sortByLocation();
 }

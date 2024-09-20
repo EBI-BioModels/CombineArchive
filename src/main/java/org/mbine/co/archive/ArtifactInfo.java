@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2013 EMBL - European Bioinformatics Institute
  * Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in
@@ -26,88 +26,82 @@ package org.mbine.co.archive;
  * @author <a href="mailto:nvntung@gmail.com">Tung Nguyen</a>
  */
 public final class ArtifactInfo {
-   // The format attribute
-   private String format;
-   // The location attribute
-   private String path;
+    // The format attribute
+    private final String format;
+    // The location attribute
+    private final String path;
 
-   // this attribute indicates whether the artifact is a master file or not.
-   // if it is set true, this file is used first
-   private boolean master;
-
-
-   ArtifactInfo(String path, String format, boolean master) {
-      this.path = path;
-      this.format = format;
-      this.master = master;
-   }
-
-   public String getFormat() {
-      return format;
-   }
+    // this attribute indicates whether the artifact is a master file or not.
+    // if it is set true, this file is used first
+    private boolean master;
 
 
-   public String getPath() {
-      return path;
-   }
+    ArtifactInfo(String path, String format, boolean master) {
+        this.path = path;
+        this.format = format;
+        this.master = master;
+    }
 
-   public boolean isMaster() {
-      return master;
-   }
+    public String getFormat() {
+        return format;
+    }
 
-   public void setMaster(boolean master) {
-      this.master = master;
-   }
+    public String getPath() {
+        return path;
+    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#hashCode()
-    */
-   @Override
-   public int hashCode() {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + ((path == null) ? 0 : path.hashCode());
-      result = prime * result + ((format == null) ? 0 : format.hashCode());
-      return result;
-   }
+    public boolean isMaster() {
+        return master;
+    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#equals(java.lang.Object)
-    */
-   @Override
-   public boolean equals(Object obj) {
-      if (this == obj)
-         return true;
-      if (obj == null)
-         return false;
-      if (getClass() != obj.getClass())
-         return false;
-      ArtifactInfo other = (ArtifactInfo) obj;
-      if (path == null) {
-         if (other.path != null)
+    public void setMaster(boolean master) {
+        this.master = master;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((path == null) ? 0 : path.hashCode());
+        result = prime * result + ((format == null) ? 0 : format.hashCode());
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
             return false;
-      } else if (!path.equals(other.path))
-         return false;
-      if (format == null) {
-         if (other.format != null)
+        if (getClass() != obj.getClass())
             return false;
-      } else if (!format.equals(other.format))
-         return false;
-      if (!master) {
-         if (other.master) {
+        ArtifactInfo other = (ArtifactInfo) obj;
+        if (path == null) {
+            if (other.path != null)
+                return false;
+        } else if (!path.equals(other.path))
             return false;
-         }
-      } else if (!other.master) {
-         return false;
-      }
-      return true;
-   }
+        if (format == null) {
+            if (other.format != null)
+                return false;
+        } else if (!format.equals(other.format))
+            return false;
+        if (!master) {
+            return !other.master;
+        } else return other.master;
+    }
 
-   /* (non-Javadoc)
-    * @see java.lang.Object#toString()
-    */
-   @Override
-   public String toString() {
-      return "ArtifactInfo [format=" + format + ", path=" + path + ", master=" + master + "]";
-   }
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "ArtifactInfo [format=" + format + ", path=" + path + ", master=" + master + "]";
+    }
 }

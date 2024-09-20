@@ -17,47 +17,41 @@ package org.mbine.co.archive;
 
 import java.io.IOException;
 import java.net.URI;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 
  * @author Stuart Moodie
- *
  */
 public class ZipDemo {
-	private static String EXAMPLE_PATH="example_files/example1_test/example_zip"; 
-	private static final String filesToZip[] = {
-			"readme.txt", "anotherFile.txt", "test_sheet.ps"
-	}; 
-	
-	public static void main(String[] args) throws IOException {
-		Map<String, String> env = new HashMap<>();
-		env.put("create", "true");
+    private static final String[] filesToZip = {
+            "readme.txt", "anotherFile.txt", "test_sheet.ps"
+    };
+
+    public static void main(String[] args) throws IOException {
+        Map<String, String> env = new HashMap<>();
+        env.put("create", "true");
         final URI TEST_PATH = Paths.get(System.getProperty("user.home"), "tst.zip").toUri();
-		Files.deleteIfExists(Paths.get(TEST_PATH));
-        final String TEST_URI = new StringBuilder("jar:").append(TEST_PATH).toString();
-		URI uri = URI.create(TEST_URI);
-		try(FileSystem fs = FileSystems.newFileSystem(uri, env)){
-				Path file1 = Paths.get(EXAMPLE_PATH, filesToZip[0]);
-				Path zipfile1 = fs.getPath(filesToZip[0]);
-				Path dirs = fs.getPath(EXAMPLE_PATH);
-				Files.createDirectories(dirs);
-				Files.createDirectories(fs.getPath("foo", "bar"));
-				Files.copy(file1, zipfile1);
-				Path file2 = Paths.get(EXAMPLE_PATH, filesToZip[2]);
-				Path dirFile = fs.getPath(dirs.toString(), filesToZip[2]);
-				Files.copy(file2, dirFile);				
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		System.out.println("Done");
-	}
+        Files.deleteIfExists(Paths.get(TEST_PATH));
+        final String TEST_URI = "jar:" + TEST_PATH;
+        URI uri = URI.create(TEST_URI);
+        try (FileSystem fs = FileSystems.newFileSystem(uri, env)) {
+            String EXAMPLE_PATH = "example_files/example1_test/example_zip";
+            Path file1 = Paths.get(EXAMPLE_PATH, filesToZip[0]);
+            Path zipfile1 = fs.getPath(filesToZip[0]);
+            Path dirs = fs.getPath(EXAMPLE_PATH);
+            Files.createDirectories(dirs);
+            Files.createDirectories(fs.getPath("foo", "bar"));
+            Files.copy(file1, zipfile1);
+            Path file2 = Paths.get(EXAMPLE_PATH, filesToZip[2]);
+            Path dirFile = fs.getPath(dirs.toString(), filesToZip[2]);
+            Files.copy(file2, dirFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        System.out.println("Done");
+    }
 
 }

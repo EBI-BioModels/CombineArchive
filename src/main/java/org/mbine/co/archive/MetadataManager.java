@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2013 EMBL - European Bioinformatics Institute
  * Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in
@@ -14,7 +14,6 @@
  */
 
 package org.mbine.co.archive;
-
 
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.vocabulary.DCTerms;
@@ -32,85 +31,81 @@ import java.util.Date;
  * @author Stuart Moodie
  */
 public class MetadataManager implements IMetadataManager {
-   /**
-    *
-    */
-   private static final String W3C_DTF_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SXXX";
+    /**
+     *
+     */
+    private static final String W3C_DTF_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SXXX";
 
-   private final Path metaPath;
-   private final DateFormat format;
-   private Model model;
+    private final Path metaPath;
+    private final DateFormat format;
+    private Model model;
 
-   public MetadataManager(Path metaFile) {
-      this.metaPath = metaFile;
-      format = new SimpleDateFormat(W3C_DTF_FORMAT);
-   }
+    public MetadataManager(Path metaFile) {
+        this.metaPath = metaFile;
+        format = new SimpleDateFormat(W3C_DTF_FORMAT);
+    }
 
+    public Path getMetaPath() {
+        return metaPath;
+    }
 
-   public Path getMetaPath() {
-      return metaPath;
-   }
+    public Model getModel() {
+        return model;
+    }
 
-   public Model getModel() {
-      return model;
-   }
+    public void setModel(Model model) {
+        this.model = model;
+    }
 
-   public void setModel(Model model) {
-      this.model = model;
-   }
+    /* (non-Javadoc)
+     * @see org.mbine.co.archive.IMetadataManager#load()
+     */
+    @Override
+    public void load() {
+        try (InputStream in = Files.newInputStream(metaPath, StandardOpenOption.READ)) {
+            model = ModelFactory.createDefaultModel();
 
-   /* (non-Javadoc)
-    * @see org.mbine.co.archive.IMetadataManager#load()
-    */
-   @Override
-   public void load() {
-      try (InputStream in = Files.newInputStream(metaPath, StandardOpenOption.READ)) {
-         model = ModelFactory.createDefaultModel();
-         model.read(in, null);
-      } catch (Exception e) {
-         new RuntimeException(e);
-      }
-   }
+            model.read(in, null);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-   /* (non-Javadoc)
-    * @see org.mbine.co.archive.IMetadataManager#updateModifiedTimestamp()
-    */
-   @Override
-   public void updateModifiedTimestamp() {
-//		Resource url = 
-//		Selector selector = new SimpleSelector(ResourceFactory.createResource("file:///."), DCTerms.modified, (Object)null);
-      StmtIterator iter = model.listStatements(ResourceFactory.createResource("file:///"), DCTerms.modified, (RDFNode) null);
+    /* (non-Javadoc)
+     * @see org.mbine.co.archive.IMetadataManager#updateModifiedTimestamp()
+     */
+    @Override
+    public void updateModifiedTimestamp(final String rootResourceURI) {
+        Resource resource = ResourceFactory.createResource(rootResourceURI);
+        StmtIterator iter = model.listStatements(resource, DCTerms.modified, (RDFNode) null);
 
-//		Resource docRoot = model.getResource("file:///.");
-//		Statement stmt = docRoot.getProperty(DCTerms.modified);
-      Date modifiedTimestamp = new Date();
-      if (iter.hasNext()) {
-         Statement stmt = iter.next();
-         stmt.changeObject(format.format(modifiedTimestamp));
-      } else {
-         Resource docRoot = model.getResource("file:///");
-         docRoot.addProperty(DCTerms.modified, format.format(modifiedTimestamp));
-      }
-   }
+        Date modifiedTimestamp = new Date();
+        if (iter.hasNext()) {
+            Statement stmt = iter.next();
+            stmt.changeObject(format.format(modifiedTimestamp));
+        } else {
+            Resource docRoot = model.getResource(rootResourceURI);
+            docRoot.addProperty(DCTerms.modified, format.format(modifiedTimestamp));
+        }
+    }
 
-   /* (non-Javadoc)
-    * @see org.mbine.co.archive.IMetadataManager#getRDFModel()
-    */
-   @Override
-   public Model getRDFModel() {
-      return this.model;
-   }
+    /* (non-Javadoc)
+     * @see org.mbine.co.archive.IMetadataManager#getRDFModel()
+     */
+    @Override
+    public Model getRDFModel() {
+        return this.model;
+    }
 
-   /* (non-Javadoc)
-    * @see org.mbine.co.archive.IMetadataManager#save()
-    */
-   @Override
-   public void save() {
-      try (OutputStream of = Files.newOutputStream(metaPath, StandardOpenOption.WRITE)) {
-         model.write(of);
-      } catch (Exception e) {
-         new RuntimeException(e);
-      }
-   }
-
+    /* (non-Javadoc)
+     * @see org.mbine.co.archive.IMetadataManager#save()
+     */
+    @Override
+    public void save() {
+        try (OutputStream of = Files.newOutputStream(metaPath, StandardOpenOption.WRITE)) {
+            model.write(of);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
