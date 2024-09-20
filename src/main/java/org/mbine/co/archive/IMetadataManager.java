@@ -24,7 +24,7 @@ public interface IMetadataManager {
 
     void load();
 
-   void updateModifiedTimestamp();
+    void updateModifiedTimestamp(final String rootResourceURI);
 
     Model getRDFModel();
 

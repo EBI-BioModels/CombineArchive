@@ -34,28 +34,33 @@ public class CombineArchive implements ICombineArchive {
    private final IManifestManager manifest;
    private final IMetadataManager metadataManager;
    private boolean contentChanged;
+    private final String rootResourceURI;
 
-   CombineArchive(FileSystem fs, IManifestManager manMan, IMetadataManager metaManager) {
-      this.fs = fs;
-      this.manifest = manMan;
-      this.metadataManager = metaManager;
-      this.contentChanged = false;
-   }
+    CombineArchive(FileSystem fs, IManifestManager manMan, IMetadataManager metaManager, String rootResourceURI) {
+        this.fs = fs;
+        this.manifest = manMan;
+        this.metadataManager = metaManager;
+        if (rootResourceURI == null) {
+            rootResourceURI = "file:///";
+        }
+        this.rootResourceURI = rootResourceURI;
+        this.contentChanged = false;
+    }
 
-   @Override
-   public void close() {
-      try {
-         if (contentChanged) {
-            metadataManager.load();
-            metadataManager.updateModifiedTimestamp();
-            metadataManager.save();
-         }
-         fs.close();
-         this.contentChanged = false;
-      } catch (IOException e) {
-         throw new CombineArchiveException(e);
-      }
-   }
+    @Override
+    public void close() {
+        try {
+            if (contentChanged) {
+                metadataManager.load();
+                metadataManager.updateModifiedTimestamp(rootResourceURI);
+                metadataManager.save();
+            }
+            fs.close();
+            this.contentChanged = false;
+        } catch (IOException e) {
+            throw new CombineArchiveException(e);
+        }
+    }
 
 
    @Override

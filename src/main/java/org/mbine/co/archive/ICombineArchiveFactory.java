@@ -39,4 +39,15 @@ public interface ICombineArchiveFactory {
      * @return An instance of ICombineArchive.
      */
     ICombineArchive openArchive(String path, boolean createFlag);
+
+    /**
+     * Opens an archive with the given path and creation flag.
+     *
+     * @param path       the file location of the archive.
+     * @param resourceURI the URI of the root resource
+     * @param createFlag When set to true a new archive will be created if the file does not exist, otherwise the
+     *                   archive file must exist.
+     * @return An instance of ICombineArchive.
+     */
+    ICombineArchive openArchive(String path, final String resourceURI, boolean createFlag);
 }
