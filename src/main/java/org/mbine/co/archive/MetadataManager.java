@@ -105,4 +105,8 @@ public class MetadataManager implements IMetadataManager {
             throw new RuntimeException(e);
         }
     }
+
+    public void print() {
+        model.write(System.out);
+    }
 }

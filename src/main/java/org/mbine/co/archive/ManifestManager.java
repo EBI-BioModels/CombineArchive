@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2013 EMBL - European Bioinformatics Institute
  * Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in
@@ -23,9 +23,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -148,13 +146,13 @@ public class ManifestManager implements IManifestManager {
         NodeList nodeList = doc.getElementsByTagName("content");
         for (int i = 0; i < nodeList.getLength(); i++) {
             Element child = (Element) nodeList.item(i);
-            String locn = child.getAttribute("location").trim();
+            String location = child.getAttribute("location").trim();
             String type = child.getAttribute("format");
             String master = child.getAttribute("master");
             Map<String, String> data = new HashMap<>();
             data.put("format", type);
             data.put("master", master);
-            this.manifestMap.put(locn, data);
+            this.manifestMap.put(location, data);
         }
     }
 
@@ -177,5 +175,18 @@ public class ManifestManager implements IManifestManager {
                         },
                         LinkedHashMap::new
                 ));
+    }
+
+    public void print() throws IOException {
+        File file = new File(maniPath.toFile().getAbsolutePath());
+        try (FileInputStream fis = new FileInputStream(file)) {
+            int oneByte;
+            while ((oneByte = fis.read()) != -1) {
+                System.out.write(oneByte);
+            }
+            System.out.flush();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

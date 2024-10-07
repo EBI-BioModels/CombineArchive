@@ -15,6 +15,7 @@
 
 package org.mbine.co.archive;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -59,4 +60,6 @@ public interface IManifestManager {
      * calling the {@link org.mbine.co.archive.ManifestManager#save()} method to write the content out the file.
      */
     void sortByLocation();
+
+    void print() throws IOException;
 }

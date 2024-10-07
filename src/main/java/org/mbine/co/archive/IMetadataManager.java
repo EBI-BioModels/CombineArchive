@@ -37,4 +37,5 @@ public interface IMetadataManager {
 
     void save();
 
+    void print();
 }
