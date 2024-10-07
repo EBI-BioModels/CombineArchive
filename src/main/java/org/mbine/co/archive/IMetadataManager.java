@@ -28,6 +28,13 @@ public interface IMetadataManager {
 
     Model getRDFModel();
 
+    /* (non-Javadoc)
+     * @see org.mbine.co.archive.IMetadataManager#getRDFModel()
+     */
+    Model getModel();
+
+    void setModel(final Model model);
+
     void save();
 
 }

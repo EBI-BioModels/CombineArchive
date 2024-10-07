@@ -67,7 +67,8 @@ public class CombineArchiveFactory implements ICombineArchiveFactory {
             IMetadataManager meta = new MetadataManager(metadataPath);
             if (!Files.exists(metadataPath)) {
                 if (createFlag) {
-                    createMetadata(metadataPath, rootResourceURI);
+                    Model model = createMetadata(metadataPath, rootResourceURI);
+                    meta.setModel(model);
                 }
             } else {
                 meta.load();
@@ -100,7 +101,7 @@ public class CombineArchiveFactory implements ICombineArchiveFactory {
         mfm.addEntry(".", data);
     }
 
-    private void createMetadata(Path metadataPath, final String rootResourceURI) throws IOException {
+    private Model createMetadata(Path metadataPath, final String rootResourceURI) throws IOException {
         Model mdl = createRdfModelForBioModels();
 
         Resource docRoot = mdl.createResource(rootResourceURI);
@@ -112,6 +113,7 @@ public class CombineArchiveFactory implements ICombineArchiveFactory {
         try (OutputStream of = Files.newOutputStream(metadataPath)) {
             mdl.write(of);
         }
+        return mdl;
     }
 
     private static Model createRdfModelForBioModels() {

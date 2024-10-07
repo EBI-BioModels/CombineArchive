@@ -31,9 +31,6 @@ import java.util.Date;
  * @author Stuart Moodie
  */
 public class MetadataManager implements IMetadataManager {
-    /**
-     *
-     */
     private static final String W3C_DTF_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SXXX";
 
     private final Path metaPath;
@@ -49,7 +46,7 @@ public class MetadataManager implements IMetadataManager {
         return metaPath;
     }
 
-    public Model getModel() {
+    public Model getRDFModel() {
         return model;
     }
 
@@ -93,7 +90,7 @@ public class MetadataManager implements IMetadataManager {
      * @see org.mbine.co.archive.IMetadataManager#getRDFModel()
      */
     @Override
-    public Model getRDFModel() {
+    public Model getModel() {
         return this.model;
     }
 
