@@ -108,7 +108,7 @@ public class CombineArchiveFactory implements ICombineArchiveFactory {
         Date creationDate = new Date();
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SXXX");
         docRoot.addProperty(DCTerms.created, format.format(creationDate));
-        docRoot.addProperty(DCTerms.creator, "libCombineArchive");
+        docRoot.addProperty(DCTerms.creator, "The BioModels Team <biomodels-cura@ebi.ac.uk>");
 
         try (OutputStream of = Files.newOutputStream(metadataPath)) {
             mdl.write(of);
