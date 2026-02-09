@@ -15,8 +15,8 @@
 
 package org.mbine.co.archive;
 
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.vocabulary.DCTerms;
+import org.apache.jena.rdf.model.*;
+import org.apache.jena.vocabulary.*;
 
 import java.io.InputStream;
 import java.io.OutputStream;

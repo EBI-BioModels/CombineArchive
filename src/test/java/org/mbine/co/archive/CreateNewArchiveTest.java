@@ -15,6 +15,7 @@
 
 package org.mbine.co.archive;
 
+import org.apache.jena.rdf.model.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

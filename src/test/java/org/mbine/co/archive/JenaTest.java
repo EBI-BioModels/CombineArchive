@@ -15,22 +15,16 @@
 
 package org.mbine.co.archive;
 
+import org.apache.jena.rdf.model.*;
+import org.apache.jena.vocabulary.DCTerms;
+import org.junit.Test;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
-import com.hp.hpl.jena.vocabulary.DCTerms;
-import org.junit.Test;
-
 /**
- * 
  * @author Stuart Moodie
- *
  */
 public class JenaTest {
 	private static final String personURI = "http://somewhere/JohnSmith";
