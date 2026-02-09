@@ -118,10 +118,14 @@ public class CombineArchiveFactory implements ICombineArchiveFactory {
 
     private static Model createRdfModelForBioModels() {
         Model mdl = ModelFactory.createDefaultModel();
-        mdl.setNsPrefix("vCard", "http://www.w3.org/2001/vcard-rdf/3.0#");
+        // Set individual namespaces
+        /*mdl.setNsPrefix("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+        mdl.setNsPrefix("rdfs", "http://www.w3.org/2000/01/rdf-schema#");
+        mdl.setNsPrefix("dc", "http://purl.org/dc/elements/1.1/");
+        mdl.setNsPrefix("dcterms", "http://purl.org/dc/terms/");
+        mdl.setNsPrefix("foaf", "http://xmlns.com/foaf/0.1/");
         mdl.setNsPrefix("bqbiol", "http://biomodels.net/biology-qualifiers/#");
-        mdl.setNsPrefix("bqmodel", "http://biomodels.net/model-qualifiers/#");
-        mdl.setNsPrefix("dcterms", DCTerms.NS);
+        mdl.setNsPrefix("bqmodel", "http://biomodels.net/model-qualifiers/#");*/
         return mdl;
     }
 
