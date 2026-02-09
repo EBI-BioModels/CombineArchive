@@ -68,9 +68,10 @@ public interface ICombineArchive extends AutoCloseable {
      * file location does not already exist.
      *
      * @param fileLocation the location to test.
+     * @param overwrite    the boolean flag telling the file is allowed to overwrite or not.
      * @return true if the createArtifact method will succeed, false otherwise.
      */
-    boolean canCreateArtifact(String fileLocation);
+    boolean canCreateArtifact(String fileLocation, boolean overwrite);
 
     /**
      * Create a new artifact in the archive. It will create an empty artifact that can then be populated
@@ -79,11 +80,12 @@ public interface ICombineArchive extends AutoCloseable {
      * @param fileLocation the location of the artifact in the archive.
      * @param fileType     the mime type of the artifact.
      * @param master       indicating whether the artifact is master or not.
+     * @param overwrite    the boolean flag telling the file is allowed to overwrite or not.
      * @return an entry describing the newly created artifact.
      * @throws IllegalArgumentException if <code>canCreateArtifact</code> is false.
      * @throws CombineArchiveException  if there is an IO error.
      */
-    ArtifactInfo createArtifact(String fileLocation, String fileType, boolean master);
+    ArtifactInfo createArtifact(String fileLocation, String fileType, boolean master, boolean overwrite);
 
 
     /**
@@ -94,11 +96,20 @@ public interface ICombineArchive extends AutoCloseable {
      * @param fileType     the mime type of the artifact.
      * @param srcFile      the path of the src to be copied from. Cannot be null.
      * @param master       the boolean flag telling the file is master or not.
+     * @param overwrite    the boolean flag telling the file is allowed to overwrite or not.
      * @return an entry describing the newly created artifact.
      * @throws IllegalArgumentException if <code>canCreateArtifact</code> is false.
      * @throws CombineArchiveException  if there is an IO error.
      */
-    ArtifactInfo createArtifact(String fileLocation, String fileType, Path srcFile, boolean master);
+    ArtifactInfo createArtifact(String fileLocation, String fileType, Path srcFile, boolean master, boolean overwrite);
+
+    /**
+     * Copies from another artifact
+     * @param artifactInfo {@link ArtifactInfo} holding all information of the given artifact.
+     * @param overwrite the boolean flag telling the file is allowed to overwrite or not.
+     * @return
+     */
+    ArtifactInfo createArtifact(ArtifactInfo artifactInfo, boolean overwrite);
 
     /**
      * Remove the artifact from the archive.

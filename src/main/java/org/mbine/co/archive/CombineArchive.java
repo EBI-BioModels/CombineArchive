@@ -82,8 +82,8 @@ public class CombineArchive implements ICombineArchive {
     }
 
     @Override
-    public ArtifactInfo createArtifact(String fileLocation, String fileType, boolean master) {
-        if (!canCreateArtifact(fileLocation)) {
+    public ArtifactInfo createArtifact(String fileLocation, String fileType, boolean master, boolean overwrite) {
+        if (!canCreateArtifact(fileLocation, overwrite)) {
             throw new IllegalArgumentException("Invalid file location: " + fileLocation);
         }
         try {
@@ -92,7 +92,15 @@ public class CombineArchive implements ICombineArchive {
             if (newResPath.getParent() != null && !Files.exists(newResPath.getParent())) {
                 Files.createDirectories(newResPath.getParent());
             }
-            Files.createFile(newResPath);
+            try {
+                Files.createFile(newResPath);
+            } catch (FileAlreadyExistsException e) {
+                // File exists, handle as needed
+                if (overwrite) {
+                    Files.delete(newResPath);
+                    Files.createFile(newResPath);
+                }
+            }
             Map<String, String> data = new HashMap<>();
             data.put("format", fileType);
             data.put("master", Boolean.toString(master));
@@ -176,12 +184,16 @@ public class CombineArchive implements ICombineArchive {
     }
 
     @Override
-    public boolean canCreateArtifact(String fileLocation) {
+    public boolean canCreateArtifact(String fileLocation, boolean overwrite) {
         boolean retVal;
         try {
             if (fileLocation != null) {
                 Path testPath = getPath(fileLocation);
+                if (Files.exists(testPath)) {
+                    return overwrite;
+                }
                 retVal = !Files.exists(testPath);
+
             } else {
                 retVal = false;
             }
@@ -192,9 +204,15 @@ public class CombineArchive implements ICombineArchive {
     }
 
     @Override
-    public ArtifactInfo createArtifact(String fileLocation, String fileType, Path srcFile, boolean master) {
+    public ArtifactInfo createArtifact(
+            String fileLocation,
+            String fileType,
+            Path srcFile,
+            boolean master,
+            boolean overwrite
+    ) {
         try {
-            ArtifactInfo artInfo = this.createArtifact(fileLocation, fileType, master);
+            ArtifactInfo artInfo = this.createArtifact(fileLocation, fileType, master, overwrite);
             Path zipEntryPath = getPath(artInfo.getPath()).toAbsolutePath();
             Files.copy(srcFile, zipEntryPath, StandardCopyOption.REPLACE_EXISTING);
             this.contentChanged = true;
@@ -202,6 +220,12 @@ public class CombineArchive implements ICombineArchive {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public ArtifactInfo createArtifact(final ArtifactInfo original, final boolean overwrite) {
+        Path zipEntryPath = getPath(original.getPath()).toAbsolutePath();
+        return createArtifact(original.getPath(), original.getFormat(), zipEntryPath, original.isMaster(), overwrite);
     }
 
     @Override
