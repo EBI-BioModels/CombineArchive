@@ -214,7 +214,7 @@ public class CombineArchive implements ICombineArchive {
         try {
             ArtifactInfo artInfo = this.createArtifact(fileLocation, fileType, master, overwrite);
             Path zipEntryPath = getPath(artInfo.getPath()).toAbsolutePath();
-            Files.copy(srcFile, zipEntryPath, StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(srcFile, zipEntryPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.COPY_ATTRIBUTES);
             this.contentChanged = true;
             return artInfo;
         } catch (IOException e) {
