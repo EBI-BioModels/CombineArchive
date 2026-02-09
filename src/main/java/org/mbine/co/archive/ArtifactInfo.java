@@ -29,7 +29,7 @@ public final class ArtifactInfo {
     // The format attribute
     private final String format;
     // The location attribute
-    private final String path;
+    private String path;
 
     // this attribute indicates whether the artifact is a master file or not.
     // if it is set true, this file is used first
@@ -103,5 +103,9 @@ public final class ArtifactInfo {
     @Override
     public String toString() {
         return "ArtifactInfo [format=" + format + ", path=" + path + ", master=" + master + "]";
+    }
+
+    public void setPath(final String path) {
+        this.path = path;
     }
 }
